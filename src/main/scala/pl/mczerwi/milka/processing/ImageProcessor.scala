@@ -1,4 +1,4 @@
-package pl.mczerwi.milka
+package pl.mczerwi.milka.processing
 
 import org.opencv.core.Mat
 

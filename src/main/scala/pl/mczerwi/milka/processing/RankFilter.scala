@@ -1,7 +1,6 @@
-package pl.mczerwi.milka
+package pl.mczerwi.milka.processing
 
 import org.opencv.core.Mat
-import pl.mczerwi.milka.Pixel._
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import scala.collection.mutable.ListBuffer

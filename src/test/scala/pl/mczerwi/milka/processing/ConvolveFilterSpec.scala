@@ -1,4 +1,6 @@
-package pl.mczerwi.milka
+package pl.mczerwi.milka.processing
+
+import pl.mczerwi.milka.processing.ConvolveFilter;
 
 
 /**

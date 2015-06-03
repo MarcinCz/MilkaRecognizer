@@ -1,33 +1,12 @@
-package pl.mczerwi.milka
+package pl.mczerwi.milka.processing
 
-import org.opencv.core.Mat
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferByte
-import java.awt.Image
-import javax.swing.ImageIcon
-import javax.swing.JFrame
-import java.awt.FlowLayout
-import javax.swing.JLabel
-
+import org.opencv.core.Mat
 
 /**
  * @author marcin
  */
-trait ImageDisplayer {
-  
-  def displayImage(img: Image) {
-    val imageIcon = new ImageIcon(img)
-    val frame = new JFrame
-    frame.setLayout(new FlowLayout)
-    frame.setSize(img.getWidth(null), img.getHeight(null))
-    val label = new JLabel
-    label.setIcon(imageIcon)
-    frame.add(label)
-    frame.setVisible(true)
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-  }
-}
-
 object MatImplicits {
   implicit def mat2BufferedImage(mat: Mat) = {
     // source: http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/

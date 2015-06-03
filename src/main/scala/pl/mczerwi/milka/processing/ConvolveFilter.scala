@@ -1,4 +1,4 @@
-package pl.mczerwi.milka
+package pl.mczerwi.milka.processing
 
 import org.opencv.core.Mat
 import scala.collection.mutable.ListBuffer
@@ -44,4 +44,14 @@ class ConvolveFilter(mask: Seq[Float]) extends ImageProcessor {
       }
   }
 
+}
+
+
+object SharpenFilter {
+  def apply {
+    new ConvolveFilter(Seq[Float](
+    -1, -1, -1, 
+    -1, 9, -1, 
+    -1, -1, -1)) 
+  }
 }
