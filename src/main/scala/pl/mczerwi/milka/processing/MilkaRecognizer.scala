@@ -1,17 +1,14 @@
 package pl.mczerwi.milka.processing
 
-import pl.mczerwi.milka.gui.ImageProcessingStage
-import pl.mczerwi.milka.gui.ImageProcessingStage
-import pl.mczerwi.milka.processing.MatImplicits._
+import scala.collection.mutable.ListBuffer
+
+import org.opencv.core.Mat
 import org.opencv.highgui.Highgui
 import org.slf4j.LoggerFactory
+
 import com.typesafe.scalalogging.Logger
-import pl.mczerwi.milka.gui.ImageProcessingStage
-import pl.mczerwi.milka.gui.ImageProcessingStage
-import scala.collection.mutable.ListBuffer
-import org.opencv.core.Mat
-import pl.mczerwi.milka.gui.ImageProcessingStage
-import java.awt.image.BufferedImage
+
+import pl.mczerwi.milka.processing.MatImplicits.mat2BufferedImage
 
 
 /**
@@ -32,7 +29,7 @@ object MilkaRecognizer extends TimePrinter {
       image
     }
     
-    def timeAndAddStageForSplitter(title: String, f: => SegmentSplitterResult) = {
+    def timeAndAddStageForSplitter(title: String, f: => ImageObjectSplitterResult) = {
       val result = time(title, f)
       processingStages += ImageProcessingStage(title, result.image)
       result
@@ -46,8 +43,12 @@ object MilkaRecognizer extends TimePrinter {
     val purpleMedian = timeAndAddStage("Median filter", MedianFilter(2)(purpleImg))
     val purpleDilation = timeAndAddStage("Purple dilation", Dilation(1)(purpleMedian))
     val purpleErosion = timeAndAddStage("Purple erosion", Erosion(3)(purpleMedian))
-    val purpleSegmentSpliting = timeAndAddStageForSplitter("Purple segment splitting", SegmentSplitter()(purpleErosion, 250))
+    val purpleSegmentSpliting = timeAndAddStageForSplitter("Purple segment splitting", ImageObjectSplitter()(purpleErosion, 250))
+    val whiteImg = timeAndAddStage("White segments", WhiteSegmentator()(medianImg))
+    val whiteDilation = timeAndAddStage("White median", MedianFilter(1)(whiteImg))
+    val whiteErosion = timeAndAddStage("White erosion", Erosion(1)(whiteDilation))
+    val whiteSegmentSpliting = timeAndAddStageForSplitter("White segment splitting", ImageObjectSplitter()(whiteErosion, 50))
+
     processingStages
-  
   }
 }

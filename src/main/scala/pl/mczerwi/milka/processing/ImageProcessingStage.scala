@@ -1,6 +1,5 @@
-package pl.mczerwi.milka.gui
+package pl.mczerwi.milka.processing
 
-import org.opencv.core.Mat
 import java.awt.image.BufferedImage
 
 /**

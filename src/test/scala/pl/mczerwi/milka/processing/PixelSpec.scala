@@ -1,9 +1,5 @@
 package pl.mczerwi.milka.processing
 
-import org.scalatest.junit.JUnitRunner
-
-import pl.mczerwi.milka.processing.Pixel;
-
 /**
  * @author marcin
  */

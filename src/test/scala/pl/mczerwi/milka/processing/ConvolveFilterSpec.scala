@@ -1,7 +1,5 @@
 package pl.mczerwi.milka.processing
 
-import pl.mczerwi.milka.processing.ConvolveFilter;
-
 
 /**
  * @author marcin

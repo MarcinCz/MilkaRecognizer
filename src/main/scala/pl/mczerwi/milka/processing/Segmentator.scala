@@ -30,3 +30,11 @@ object PurpleSegmentator {
     }
   }
 }
+
+object WhiteSegmentator {
+  def apply() = new Segmentator {
+    def matchPixel(pixel: Pixel) = {
+      pixel.brightness > 0.80 && pixel.saturation < 0.25
+    }
+  }
+}

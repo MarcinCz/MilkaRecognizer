@@ -1,7 +1,6 @@
 package pl.mczerwi.milka.gui
 
 import java.awt.Dimension
-
 import scala.swing.BorderPanel
 import scala.swing.BoxPanel
 import scala.swing.Button
@@ -11,12 +10,11 @@ import scala.swing.MainFrame
 import scala.swing.Orientation
 import scala.swing.SimpleSwingApplication
 import scala.swing.event.ButtonClicked
-
 import org.slf4j.LoggerFactory
-
 import com.typesafe.scalalogging.Logger
-
 import pl.mczerwi.milka.processing.MilkaRecognizer
+import pl.mczerwi.milka.processing.ImageProcessingStage
+import javax.imageio.ImageIO
 
 /**
  * @author marcin
@@ -31,21 +29,19 @@ object AppGUI extends SimpleSwingApplication {
     val buttonRight = new Button("Next")
     val buttonLeft = new Button("Previous")
     val buttonFileSelect = new Button("Select file")
+    val buttonSave = new Button("Save image")
     
     contents += buttonFileSelect
     contents += buttonLeft
     contents += buttonRight
+    contents += buttonSave
     
-    listenTo(buttonFileSelect, buttonRight, buttonLeft)
+    listenTo(buttonFileSelect, buttonRight, buttonLeft, buttonSave)
     reactions += {
-      case ButtonClicked(`buttonLeft`) => 
-        if(currentStage > 0) {
-          showProcessingStage(currentStage - 1)
-        }
-      case ButtonClicked(`buttonRight`) => 
-        if(currentStage < processingStages.size - 1) {
-          showProcessingStage(currentStage + 1)
-        }
+      case ButtonClicked(`buttonLeft`) if(currentStage > 0)=> 
+        showProcessingStage(currentStage - 1)
+      case ButtonClicked(`buttonRight`) if(currentStage < processingStages.size - 1)=> 
+        showProcessingStage(currentStage + 1)
       case ButtonClicked(`buttonFileSelect`) => {
         fileChooser.showOpenDialog(imagePanel) match {
           case FileChooser.Result.Approve => {
@@ -62,6 +58,14 @@ object AppGUI extends SimpleSwingApplication {
           case _ =>
         }
       }
+      case ButtonClicked(`buttonSave`) if processingStages.size > 0 =>
+        fileChooser.showSaveDialog(imagePanel) match {
+          case FileChooser.Result.Approve => {
+            val fileToSave = fileChooser.selectedFile
+            ImageIO.write(processingStages(currentStage).image, "png", fileToSave);
+          }
+          case _ =>
+        }
     }
   }
   
