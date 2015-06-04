@@ -5,8 +5,7 @@ import org.opencv.core.Mat
 /**
  * @author marcin
  */
-abstract class ImageProcessor {
-  def apply(image: Mat): Mat
+trait ImageProcessor {
   
   def copyImage(image: Mat): Mat = image.clone
   

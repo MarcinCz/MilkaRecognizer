@@ -1,24 +1,30 @@
 package pl.mczerwi.milka.gui
 
+import java.awt.Dimension
+
 import scala.swing.BorderPanel
+import scala.swing.BoxPanel
 import scala.swing.Button
+import scala.swing.FileChooser
 import scala.swing.Label
 import scala.swing.MainFrame
+import scala.swing.Orientation
 import scala.swing.SimpleSwingApplication
 import scala.swing.event.ButtonClicked
-import pl.mczerwi.milka.processing.MatImplicits._
-import java.awt.Dimension
-import scala.swing.BoxPanel
-import scala.swing.Orientation
-import scala.swing.FileChooser
+
+import org.slf4j.LoggerFactory
+
+import com.typesafe.scalalogging.Logger
+
 import pl.mczerwi.milka.processing.MilkaRecognizer
 
 /**
  * @author marcin
  */
-class AppGUI extends SimpleSwingApplication {
+object AppGUI extends SimpleSwingApplication {
   
-  
+  private val logger = Logger(LoggerFactory.getLogger(getClass.getName))
+
   def top = mainFrame
   
   private def buttonPanel = new BoxPanel(Orientation.Horizontal) {
@@ -41,12 +47,19 @@ class AppGUI extends SimpleSwingApplication {
           showProcessingStage(currentStage + 1)
         }
       case ButtonClicked(`buttonFileSelect`) => {
-    	  val fileChooserResult = fileChooser.showOpenDialog(imagePanel)
-        fileChooserResult match {
+        fileChooser.showOpenDialog(imagePanel) match {
           case FileChooser.Result.Approve => {
-            processingStages = MilkaRecognizer(fileChooser.selectedFile.getPath)
+            try {
+            	processingStages = MilkaRecognizer(fileChooser.selectedFile.getPath)              
+            } catch {
+              case e : Throwable => {
+                titleLabel.text = "Error while reading file"
+                logger.error("Error while reading image file", e)
+              } 
+            }
             showProcessingStage(0)
           }
+          case _ =>
         }
       }
     }
@@ -79,7 +92,7 @@ class AppGUI extends SimpleSwingApplication {
     val stage = processingStages(stageNumber)
     titleLabel.text = stage.title
     imagePanel.image = stage.image
-    mainFrame.size = new Dimension(stage.image.getWidth, stage.image.getHeight)
+    mainFrame.size = new Dimension(stage.image.getWidth + 20, stage.image.getHeight + 80)
     currentStage = stageNumber
   }
   

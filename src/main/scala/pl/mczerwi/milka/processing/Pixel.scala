@@ -21,9 +21,19 @@ case class Pixel(red: Int, green: Int, blue: Int) {
   def saturation: Double = hsb(1)
   
   def brightness: Double = hsb(2)
+  
+  def isPartOfObject:Boolean = !this.equals(BackgroundPixel())
 
 }
 
 object Pixel {
     def apply(array: Array[Double]) = new Pixel(array(2).toInt, array(1).toInt, array(0).toInt)
+}
+
+object ObjectPixel {
+  def apply() = Pixel(0, 0, 0)
+}
+
+object BackgroundPixel {
+	def apply() = Pixel(255, 255, 255)
 }

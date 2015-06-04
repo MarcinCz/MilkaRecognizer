@@ -7,9 +7,9 @@ import java.awt.image.RescaleOp
 /**
  * @author marcin
  */
-class ConvolveFilter(mask: Seq[Float]) extends ImageProcessor {
+class ConvolveFilter(mask: Seq[Double]) extends ImageProcessor {
   
-  private[milka] val maskDim: Int = {
+  private[processing] val maskDim: Int = {
     Math.sqrt(mask.size) match  {
       case m: Double if m % 1 == 0 => Math.round(m.toFloat)
       case _ => throw new IllegalArgumentException("Wrong mask size: " + mask.size)
@@ -20,9 +20,9 @@ class ConvolveFilter(mask: Seq[Float]) extends ImageProcessor {
     val imageCopy = copyImage(image)
     var range: Int = maskDim / 2
     for (x <- range until imageCopy.rows() - range; y <- range until imageCopy.cols() - range) {
-      var redSum = 0f
-      var greenSum= 0f
-      var blueSum = 0f
+      var redSum = 0d
+      var greenSum= 0d
+      var blueSum = 0d
       var maskPosition = 0
       for(i <- x - range to x + range; j <- y - range to y + range) {
         blueSum += image.get(i, j)(0).toInt * mask(maskPosition)
@@ -35,8 +35,8 @@ class ConvolveFilter(mask: Seq[Float]) extends ImageProcessor {
     imageCopy
   }
   
-  private[milka] def calcColorVal(colorSum: Float): Int = {
-    var color: Int = Math.round(colorSum)
+  private[processing] def calcColorVal(colorSum: Double): Int = {
+    var color: Int = Math.round(colorSum.toFloat)
       color match {
         case c if c > 255 => 255
         case c if c < 0 => 0
@@ -48,10 +48,25 @@ class ConvolveFilter(mask: Seq[Float]) extends ImageProcessor {
 
 
 object SharpenFilter {
-  def apply {
-    new ConvolveFilter(Seq[Float](
-    -1, -1, -1, 
-    -1, 9, -1, 
-    -1, -1, -1)) 
+  def apply(image: Mat): Mat = {
+    val filter = new ConvolveFilter(Seq[Double](
+    0, -1, 0, 
+    -1, 5, -1, 
+    0, -1, 0))
+    filter(image)
+  }
+}
+
+object GaussFilter {
+  def apply(image: Mat): Mat = {
+    val filter = new ConvolveFilter(Seq[Double](
+    0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00000067,
+    0.00002292, 0.00078634, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292,
+    0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117,
+    0.00038771, 0.01330373, 0.11098164, 0.22508352, 0.11098164, 0.01330373, 0.00038771,
+    0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117,
+    0.00002292, 0.00078633, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292,
+    0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00002292))
+    filter(image)
   }
 }

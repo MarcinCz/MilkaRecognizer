@@ -9,7 +9,7 @@ import pl.mczerwi.milka.processing.ConvolveFilter;
 class ConvolveFilterSpec extends UnitSpec {
   
   "ConvolveFilter" should "calculate mask dimension" in {
-    var lapl = new ConvolveFilter(Seq[Float](
+    var lapl = new ConvolveFilter(Seq[Double](
     -1, -1, -1, 
     -1, 8, -1, 
     -1, -1, -1))
@@ -19,15 +19,15 @@ class ConvolveFilterSpec extends UnitSpec {
   
   it should "throw IllegalArgumentException if wrong mask is provided" in {
     a [IllegalArgumentException] should be thrownBy {
-      new ConvolveFilter(Seq[Float](
+      new ConvolveFilter(Seq[Double](
         1, 2, 1, 
         2, 4, 2, 
         1, 2))
     }
   }
   
-  "ConvolveFilter" should "calc correct pixel color" in {
-    var lapl = new ConvolveFilter(Seq[Float](
+  it should "calc correct pixel color" in {
+    var lapl = new ConvolveFilter(Seq[Double](
     -1, -1, -1, 
     -1, 8, -1, 
     -1, -1, -1))
