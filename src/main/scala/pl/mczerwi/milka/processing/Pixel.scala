@@ -30,8 +30,15 @@ object Pixel {
     def apply(array: Array[Double]) = new Pixel(array(2).toInt, array(1).toInt, array(0).toInt)
 }
 
-object ObjectPixel {
+object DefaultObjectPixel {
   def apply() = Pixel(0, 0, 0)
+}
+
+object RandomObjectPixel {
+    def apply() = {
+      val r = scala.util.Random 
+      Pixel(r.nextInt(254), r.nextInt(254), r.nextInt(254))
+    }
 }
 
 object BackgroundPixel {

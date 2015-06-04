@@ -50,7 +50,6 @@ class HistogramEqualizer extends ImageProcessor {
     val cdfMin = distribution.find { value => value != 0 }.get
     val histogramSum = histogram.sum
     val lookupTable = distribution.map { cdf => ((cdf - cdfMin)* 255) / (histogramSum - cdfMin)  }
-//        val lookup = distribution.map(Di => ((Di - D0)*(k - 1))/(S - D0))
 
     lookupTable
   }

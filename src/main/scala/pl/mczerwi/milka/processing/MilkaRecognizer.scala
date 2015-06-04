@@ -32,7 +32,13 @@ object MilkaRecognizer extends TimePrinter {
       image
     }
     
-    val original = timeAndAddStage("Original image read", Highgui.imread("images/milka4.jpg"))
+    def timeAndAddStageForSplitter(title: String, f: => SegmentSplitterResult) = {
+      val result = time(title, f)
+      processingStages += ImageProcessingStage(title, result.image)
+      result
+    }
+    
+    val original = timeAndAddStage("Original image read", Highgui.imread("images/milka2.png"))
 //    val histEqualized = timeAndAddStage("Histogram equalized", HistogramEqualizer()(original))
     val medianImg = timeAndAddStage("Gauss filter", GaussFilter(original))
 //    val sharpnedImg = timeAndAddStage("Sharpen filter", SharpenFilter(medianImg))
@@ -40,7 +46,7 @@ object MilkaRecognizer extends TimePrinter {
     val purpleMedian = timeAndAddStage("Median filter", MedianFilter(2)(purpleImg))
     val purpleDilation = timeAndAddStage("Purple dilation", Dilation(1)(purpleMedian))
     val purpleErosion = timeAndAddStage("Purple erosion", Erosion(3)(purpleMedian))
-    
+    val purpleSegmentSpliting = timeAndAddStageForSplitter("Purple segment splitting", SegmentSplitter()(purpleErosion, 250))
     processingStages
   
   }

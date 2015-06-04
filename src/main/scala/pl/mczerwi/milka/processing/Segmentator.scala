@@ -12,7 +12,7 @@ abstract class Segmentator extends ImageProcessor {
     for (x <- 0 until imageCopy.rows(); y <- 0 until imageCopy.cols()) {
       val pixel: Pixel = Pixel(image.get(x,y))
       val pixelToPut = pixel match {
-        case p if matchPixel(p) => ObjectPixel()
+        case p if matchPixel(p) => DefaultObjectPixel()
         case _ => BackgroundPixel()
       }
       putPixel(imageCopy, x, y, pixelToPut)

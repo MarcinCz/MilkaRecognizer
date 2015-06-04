@@ -51,13 +51,13 @@ object AppGUI extends SimpleSwingApplication {
           case FileChooser.Result.Approve => {
             try {
             	processingStages = MilkaRecognizer(fileChooser.selectedFile.getPath)              
+              showProcessingStage(0)
             } catch {
               case e : Throwable => {
-                titleLabel.text = "Error while reading file"
-                logger.error("Error while reading image file", e)
+                titleLabel.text = "Error while processing file"
+                logger.error("Error while processing file", e)
               } 
             }
-            showProcessingStage(0)
           }
           case _ =>
         }
