@@ -18,6 +18,6 @@ class RightPartObjectSpec extends ImageObjectSpec{
     objects = getObjects("src/test/resources/rightPart/milka4.png") ++ objects
     objects.size shouldEqual(7)
 
-    printInvariantMoments(objects)
+    printImageObjectsInfo(objects)
   }
 }

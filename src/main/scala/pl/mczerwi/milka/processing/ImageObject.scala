@@ -15,6 +15,21 @@ case class ImageObject(bounds: Bounds, pixelPositions: Seq[PixelPosition], color
     sum
   }
   
+  override def equals(other: Any) = {
+    other match {
+      case otherObject: ImageObject => bounds == otherObject.bounds && pixelPositions.sameElements(otherObject.pixelPositions)
+      case _ => false
+    }
+  }
+  
+  def isInside(other: ImageObject) = {
+    other.bounds.minX < bounds.minX && other.bounds.maxX > bounds.maxX &&
+    other.bounds.minY < bounds.minY && other.bounds.maxY > bounds.maxY
+  }
+  
+  def area = m00
+  def center = PixelPosition(iCenter.toInt, jCenter.toInt)
+  
   lazy val m00 = calcNormalMoment(0, 0)
   lazy val m01 = calcNormalMoment(0, 1)
   lazy val m02 = calcNormalMoment(0, 2)
@@ -52,6 +67,18 @@ case class ImageObject(bounds: Bounds, pixelPositions: Seq[PixelPosition], color
   lazy val M10 = (Math.pow(Mc30 * Mc03 - Mc12 * Mc21, 2) - 4 * ( Mc30 * Mc12 - Math.pow(Mc21, 2) * (Mc03 * Mc21 - Mc12))) / Math.pow(m00, 10)
 }
 
-case class Bounds(minX: Int, maxX: Int, minY: Int, maxY: Int)
+case class Bounds(minX: Int, maxX: Int, minY: Int, maxY: Int) {
+  def +(other: Bounds): Bounds = {
+    Bounds(
+      Math.min(minX, other.minX),
+      Math.max(maxX, other.maxX),
+      Math.min(minY, other.minY),
+      Math.max(maxY, other.maxY))
+  }
+}
 
-case class PixelPosition(x: Int, y: Int)
+case class PixelPosition(x: Int, y: Int) {
+  def distanceTo(other: PixelPosition) = {
+    Math.sqrt(Math.pow(x - other.x, 2) +Math.pow(y - other.y,2))
+  }
+}

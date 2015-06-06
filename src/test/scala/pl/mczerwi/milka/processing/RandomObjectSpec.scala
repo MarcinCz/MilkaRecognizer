@@ -18,6 +18,6 @@ class RandomObjectSpec extends ImageObjectSpec {
     objects = getObjects("src/test/resources/randomObject/milka4.png") ++ objects
     objects.size shouldEqual(12)
 
-    printInvariantMoments(objects)
+    printImageObjectsInfo(objects)
   }
 }

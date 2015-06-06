@@ -41,7 +41,7 @@ object MilkaRecognizer extends TimePrinter {
       result
     }
     
-    val original = timeAndAddStage("Original image read", Highgui.imread("images/milka4.png"))
+    val original = timeAndAddStage("Original image read", Highgui.imread(fileName))
 //    val histEqualized = timeAndAddStage("Histogram equalized", HistogramEqualizer()(original))
     val medianImg = timeAndAddStage("Gauss filter", GaussFilter(original))
 //    val sharpnedImg = timeAndAddStage("Sharpen filter", SharpenFilter(medianImg))
@@ -56,6 +56,7 @@ object MilkaRecognizer extends TimePrinter {
     val whiteObjectSpliting = timeAndAddStageForSplitter("White object splitting", ImageObjectSplitter()(whiteErosion, 50))
     val leftPartIdentified = timeAndAddStageForIndentificator("Left part identified", LeftPartIdentificator()(whiteObjectSpliting.image, whiteObjectSpliting.objects))
     val rightPartIdentified = timeAndAddStageForIndentificator("Right part identified", RightPartIdentificator()(whiteObjectSpliting.image, whiteObjectSpliting.objects))
+    val logoMarked = timeAndAddStage("Recognition result", FullLogoFinder()(original, purpleObjectSpliting.objects, leftPartIdentified.identifiedObjects, rightPartIdentified.identifiedObjects))
 
     processingStages
   }

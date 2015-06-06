@@ -22,7 +22,7 @@ case class Pixel(red: Int, green: Int, blue: Int) {
   
   def brightness: Double = hsb(2)
   
-  def isPartOfObject:Boolean = !this.equals(BackgroundPixel())
+  def isPartOfObject:Boolean = !(this == BackgroundPixel())
 
 }
 

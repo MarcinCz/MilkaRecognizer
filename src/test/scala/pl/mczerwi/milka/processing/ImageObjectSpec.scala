@@ -20,14 +20,16 @@ abstract class ImageObjectSpec extends UnitSpec with BeforeAndAfter  {
     fixture.splitter(Highgui.imread(fileName), 5).objects
   }
   
-  def printInvariantMoments(imageObjects: Seq[ImageObject]) {
-    def printLine(name: String, f: ImageObject => Double) = {
+  def printImageObjectsInfo(imageObjects: Seq[ImageObject]) {
+    def printLine(name: String, f: ImageObject => Any) = {
       print(name)
       for (obj <- imageObjects)
     	  print("\t" + f(obj))
       println
     }
 
+    printLine("area", obj => obj.area)
+    printLine("center", obj => obj.center)
     printLine("M1", obj => obj.M1)
     printLine("M2", obj => obj.M2)
     printLine("M3", obj => obj.M3)
