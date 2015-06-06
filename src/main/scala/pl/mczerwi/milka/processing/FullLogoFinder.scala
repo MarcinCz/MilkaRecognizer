@@ -38,7 +38,7 @@ class FullLogoFinder extends ImageProcessor {
     
     val distanceBetweenCentersSquared = Math.pow(leftPart.center distanceTo rightPart.center, 2)
     val minArea = Math.min(leftPart.area, rightPart.area)
-    if(distanceBetweenCentersSquared / minArea > 4.4 || distanceBetweenCentersSquared / minArea < 2.3) 
+    if(distanceBetweenCentersSquared / minArea > 4.4 || distanceBetweenCentersSquared / minArea < 2.2) 
       return false
       
     true

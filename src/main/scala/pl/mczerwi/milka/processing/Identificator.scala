@@ -36,7 +36,7 @@ object LeftPartIdentificator {
     new Identificator {
       def checkConstraints(imageObject: ImageObject): Boolean = {
         imageObject.M1 > 0.25 && imageObject.M1 < 0.4
-        imageObject.M2 > 0.001 && imageObject.M2 < 0.05 &&
+        imageObject.M2 > 0 && imageObject.M2 < 0.05 &&
         imageObject.M7 > 0.015 && imageObject.M7 < 0.04
       }
     }

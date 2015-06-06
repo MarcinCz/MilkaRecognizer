@@ -17,6 +17,9 @@ class LeftPartObjectSpec extends ImageObjectSpec {
     
     objects = getObjects("src/test/resources/leftPart/milka4.png") ++ objects
     objects.size shouldEqual(7)
+    
+    objects = getObjects("src/test/resources/leftPart/milka5.png") ++ objects
+    objects.size shouldEqual(8)
 
     printImageObjectsInfo(objects)
   }

@@ -7,10 +7,12 @@ import org.opencv.core.Mat
  */
 case class ImageObject(bounds: Bounds, pixelPositions: Seq[PixelPosition], color: Pixel) {
    
+  import Math.pow
+  
   private[this] def calcNormalMoment(p: Int, q: Int) = {
     var sum: Double = 0
     for(position <- pixelPositions) {
-      sum += Math.pow(position.x, p) * Math.pow(position.y, q)
+      sum += pow(position.x, p) * pow(position.y, q)
     }
     sum
   }
@@ -45,26 +47,26 @@ case class ImageObject(bounds: Bounds, pixelPositions: Seq[PixelPosition], color
   lazy val jCenter = m01/m00
   
   lazy val Mc00 = m00
-  lazy val Mc02 = m02 - Math.pow(m01, 2) / m00
-  lazy val Mc03 = m03 - 3 * m02 * jCenter + 2 * m01 * Math.pow(jCenter, 2)
+  lazy val Mc02 = m02 - pow(m01, 2) / m00
+  lazy val Mc03 = m03 - 3 * m02 * jCenter + 2 * m01 * pow(jCenter, 2)
   lazy val Mc11 = m11 - m10 * m01 / m00
-  lazy val Mc12 = m12 - 2 * m11 * jCenter - m02 * iCenter + 2 * m10 * Math.pow(jCenter, 2)
-  lazy val Mc20 = m20 - Math.pow(m10, 2) / m00
-  lazy val Mc21 = m21 - 2 * m11 * jCenter - m20 * jCenter + 2 * m01 * Math.pow(iCenter, 2)
-  lazy val Mc30 = m30 - 3 * m02 * jCenter + 2 * m10 * Math.pow(iCenter, 2)
-  
-  lazy val M1 = (Mc20 + Mc02) / Math.pow(m00, 2)
-  lazy val M2 = (Math.pow(Mc20 - Mc02, 2) + 4 * Math.pow(Mc11, 2)) / Math.pow(m00, 4)
-  lazy val M3 = (Math.pow(Mc30 - 3 * Mc12, 2) + Math.pow(3 * Mc21 - Mc03, 2)) / Math.pow(m00, 5)
-  lazy val M4 = (Math.pow(Mc30 + Mc12, 2) + Math.pow(Mc21 + Mc03, 2)) / Math.pow(m00, 5)
-  lazy val M5 = ((Mc30 - 3 * Mc12) * (Mc30 + Mc12) * (Math.pow(Mc30 + Mc12, 2) - 3 * Math.pow(Mc21 + Mc03, 2)) + 
-      + (3 * Mc21 - Mc03) * (Mc21 + Mc03) * (3 * Math.pow(Mc30 + Mc12, 2) - Math.pow(Mc21 + Mc03, 2))) / Math.pow(m00, 10)
-  lazy val M6 = ((Mc20 - Mc02) * (Math.pow(Mc30 + Mc12, 2) - Math.pow(Mc21 + Mc03, 2) + 4 * Mc11 * (Mc30 + Mc12) * (Mc21 + Mc03))) / Math.pow(m00, 7)
-  lazy val M7 = ((Mc20 * Mc02 - Math.pow(Mc11, 2))) / Math.pow(m00, 4)
-  lazy val M8 = (Mc30 * Mc12 + Mc21 * Mc03 - Math.pow(Mc12, 2) - Math.pow(Mc21, 2)) / Math.pow(m00, 5)
-  lazy val M9 = (Mc20 * (Mc21 * Mc03 - Math.pow(Mc12, 2)) + Mc02 * (Mc03 * Mc12 - math.pow(Mc21, 2)) - 
-      - Mc11 * (Mc30 * Mc03 - Mc21 * Mc12)) / Math.pow(m00, 7)
-  lazy val M10 = (Math.pow(Mc30 * Mc03 - Mc12 * Mc21, 2) - 4 * ( Mc30 * Mc12 - Math.pow(Mc21, 2) * (Mc03 * Mc21 - Mc12))) / Math.pow(m00, 10)
+  lazy val Mc12 = m12 - 2 * m11 * jCenter - m02 * iCenter + 2 * m10 * pow(jCenter, 2)
+  lazy val Mc20 = m20 - pow(m10, 2) / m00
+  lazy val Mc21 = m21 - 2 * m11 * jCenter - m20 * jCenter + 2 * m01 * pow(iCenter, 2)
+  lazy val Mc30 = m30 - 3 * m02 * jCenter + 2 * m10 * pow(iCenter, 2)
+   
+  lazy val M1 = (Mc20 + Mc02) / pow(m00, 2)
+  lazy val M2 = (pow(Mc20 - Mc02, 2) + 4 * pow(Mc11, 2)) / pow(m00, 4)
+  lazy val M3 = (pow(Mc30 - 3 * Mc12, 2) + pow(3 * Mc21 - Mc03, 2)) / pow(m00, 5)
+  lazy val M4 = (pow(Mc30 + Mc12, 2) + pow(Mc21 + Mc03, 2)) / pow(m00, 5)
+  lazy val M5 = ((Mc30 - 3 * Mc12) * (Mc30 + Mc12) * (pow(Mc30 + Mc12, 2) - 3 * pow(Mc21 + Mc03, 2)) + 
+      + (3 * Mc21 - Mc03) * (Mc21 + Mc03) * (3 * pow(Mc30 + Mc12, 2) - pow(Mc21 + Mc03, 2))) / pow(m00, 10)
+  lazy val M6 = ((Mc20 - Mc02) * (pow(Mc30 + Mc12, 2) - pow(Mc21 + Mc03, 2) + 4 * Mc11 * (Mc30 + Mc12) * (Mc21 + Mc03))) / pow(m00, 7)
+  lazy val M7 = ((Mc20 * Mc02 - pow(Mc11, 2))) / pow(m00, 4)
+  lazy val M8 = (Mc30 * Mc12 + Mc21 * Mc03 - pow(Mc12, 2) - pow(Mc21, 2)) / pow(m00, 5)
+  lazy val M9 = (Mc20 * (Mc21 * Mc03 - pow(Mc12, 2)) + Mc02 * (Mc03 * Mc12 - pow(Mc21, 2)) - 
+      - Mc11 * (Mc30 * Mc03 - Mc21 * Mc12)) / pow(m00, 7)
+  lazy val M10 = (pow(Mc30 * Mc03 - Mc12 * Mc21, 2) - 4 * ( Mc30 * Mc12 - pow(Mc21, 2) * (Mc03 * Mc21 - Mc12))) / pow(m00, 10)
 }
 
 case class Bounds(minX: Int, maxX: Int, minY: Int, maxY: Int) {
@@ -79,6 +81,6 @@ case class Bounds(minX: Int, maxX: Int, minY: Int, maxY: Int) {
 
 case class PixelPosition(x: Int, y: Int) {
   def distanceTo(other: PixelPosition) = {
-    Math.sqrt(Math.pow(x - other.x, 2) +Math.pow(y - other.y,2))
+    Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y,2))
   }
 }
