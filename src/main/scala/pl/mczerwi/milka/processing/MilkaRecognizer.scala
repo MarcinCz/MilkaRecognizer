@@ -35,7 +35,13 @@ object MilkaRecognizer extends TimePrinter {
       result
     }
     
-    val original = timeAndAddStage("Original image read", Highgui.imread("images/milka2.png"))
+    def timeAndAddStageForIndentificator(title: String, f: => IdentificatorResult) = {
+      val result = time(title, f)
+      processingStages += ImageProcessingStage(title, result.image)
+      result
+    }
+    
+    val original = timeAndAddStage("Original image read", Highgui.imread("images/milka4.png"))
 //    val histEqualized = timeAndAddStage("Histogram equalized", HistogramEqualizer()(original))
     val medianImg = timeAndAddStage("Gauss filter", GaussFilter(original))
 //    val sharpnedImg = timeAndAddStage("Sharpen filter", SharpenFilter(medianImg))
@@ -43,11 +49,13 @@ object MilkaRecognizer extends TimePrinter {
     val purpleMedian = timeAndAddStage("Median filter", MedianFilter(2)(purpleImg))
     val purpleDilation = timeAndAddStage("Purple dilation", Dilation(1)(purpleMedian))
     val purpleErosion = timeAndAddStage("Purple erosion", Erosion(3)(purpleMedian))
-    val purpleSegmentSpliting = timeAndAddStageForSplitter("Purple segment splitting", ImageObjectSplitter()(purpleErosion, 250))
+    val purpleObjectSpliting = timeAndAddStageForSplitter("Purple object splitting", ImageObjectSplitter()(purpleErosion, 250))
     val whiteImg = timeAndAddStage("White segments", WhiteSegmentator()(medianImg))
     val whiteDilation = timeAndAddStage("White median", MedianFilter(1)(whiteImg))
     val whiteErosion = timeAndAddStage("White erosion", Erosion(1)(whiteDilation))
-    val whiteSegmentSpliting = timeAndAddStageForSplitter("White segment splitting", ImageObjectSplitter()(whiteErosion, 50))
+    val whiteObjectSpliting = timeAndAddStageForSplitter("White object splitting", ImageObjectSplitter()(whiteErosion, 50))
+    val leftPartIdentified = timeAndAddStageForIndentificator("Left part identified", LeftPartIdentificator()(whiteObjectSpliting.image, whiteObjectSpliting.objects))
+    val rightPartIdentified = timeAndAddStageForIndentificator("Right part identified", RightPartIdentificator()(whiteObjectSpliting.image, whiteObjectSpliting.objects))
 
     processingStages
   }

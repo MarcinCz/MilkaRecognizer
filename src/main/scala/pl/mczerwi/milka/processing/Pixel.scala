@@ -37,7 +37,7 @@ object DefaultObjectPixel {
 object RandomObjectPixel {
     def apply() = {
       val r = scala.util.Random 
-      Pixel(r.nextInt(254), r.nextInt(254), r.nextInt(254))
+      Pixel(r.nextInt(230), r.nextInt(230), r.nextInt(230))
     }
 }
 

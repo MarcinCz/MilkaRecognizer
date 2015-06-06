@@ -15,7 +15,7 @@ abstract class ImagePanel extends Panel
 {
   private var _image: BufferedImage = null
   
-  def image: BufferedImage = _image
+  def image: BufferedImage = null
   def image_=(image: BufferedImage) = {
    _image = image
    repaint()

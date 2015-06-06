@@ -11,6 +11,12 @@ class RightPartObjectSpec extends ImageObjectSpec{
     
     objects = getObjects("src/test/resources/rightPart/milka2.png") ++ objects
     objects.size shouldEqual(4)
+    
+    objects = getObjects("src/test/resources/rightPart/milka3.png") ++ objects
+    objects.size shouldEqual(6)
+    
+    objects = getObjects("src/test/resources/rightPart/milka4.png") ++ objects
+    objects.size shouldEqual(7)
 
     printInvariantMoments(objects)
   }
