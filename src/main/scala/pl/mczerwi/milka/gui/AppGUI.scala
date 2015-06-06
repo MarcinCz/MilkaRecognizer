@@ -15,17 +15,24 @@ import com.typesafe.scalalogging.Logger
 import pl.mczerwi.milka.processing.MilkaRecognizer
 import pl.mczerwi.milka.processing.ImageProcessingStage
 import javax.imageio.ImageIO
+import org.opencv.core.Core
 
 /**
  * @author marcin
  */
 object AppGUI extends SimpleSwingApplication {
   
+  override def main(args: Array[String]) {
+      System.loadLibrary(Core.NATIVE_LIBRARY_NAME)
+      super.main(args)
+  }
+  
   private val logger = Logger(LoggerFactory.getLogger(getClass.getName))
 
   def top = mainFrame
   
   private def buttonPanel = new BoxPanel(Orientation.Horizontal) {
+    
     val buttonRight = new Button("Next")
     val buttonLeft = new Button("Previous")
     val buttonFileSelect = new Button("Select file")
